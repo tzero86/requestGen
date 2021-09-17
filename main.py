@@ -1,72 +1,57 @@
 import json
-import argparse
-
-
-# we can parse console positional arguments to generate data in bulk.
-
-# parser = argparse.ArgumentParser(description='SaveHousehold Request Generator. e.g: python main.py 2021 2 5 "low" "High" "QHP"')
-# parser.add_argument('year', metavar='Y', type=int, nargs='+',
-#                     help='The year you want to create your plan for.')
-# parser.add_argument('zip', metavar='Z', type=int, nargs='+',
-#                     help='The zip code you want to use.')
-# parser.add_argument('members', metavar='N', type=int, nargs='+',
-#                     help='The number of members for the household.')
-# parser.add_argument('months', metavar='M', type=int, nargs='+',
-#                     help='The number of coverage months.')
-# parser.add_argument('medUsage', metavar='Q', type=str, nargs='+',
-#                     help='The medicalUse indicator: Low, Medium, High, Very High')
-# parser.add_argument('prescUsage', metavar='E', type=str, nargs='+',
-#                     help='The prescriptionUse indicator: Low, Medium, High, Very High')
-# parser.add_argument('type', metavar='T', type=str, nargs='+',
-#                     help='The plan Type: QHP, APTC')
-#
-# args = parser.parse_args()
-
+import requests
 
 # the main dictionary for the plans, this is the data to be replaced with the actual plans.
-# for both APTC and QHP and for 2021 AND 2022.
+# for both APTC and QHP and for 2021 AND 2022 (we'll have to add QDP support).
 plans = {
 
     "2021": {
         "QHP": [
-            {"id": "QHP218CA54786", "netPremium": 40.69},
-            {"id": "QHP218CA54786", "netPremium": 40.69},
-            {"id": "QHP218CA54786", "netPremium": 530.46},
-            {"id": "QHP218CA54786", "netPremium": 530.46},
+            {"hiosId": "25210CA010001501", "netPremium": "336.21"},
+            {"hiosId": "25210CA011001601", "netPremium": "426.48"},
+            {"hiosId": "25210CA007001201", "netPremium": "350.00"},
+            {"hiosId": "25210CA006001101", "netPremium": "299.00"},
+            {"hiosId": "25210CA005001001", "netPremium": "248.00"},
+            {"hiosId": "25210CA009001401", "netPremium": "272.00"},
+            {"hiosId": "25210CA008001301", "netPremium": "221.00"},
+            {"hiosId": "25210CA011001601", "netPremium": "426.48"},
+            {"hiosId": "25210CA012001701", "netPremium": "516.75"},
+            {"hiosId": "25210CA012001701", "netPremium": "516.75"}
         ],
         "APTC": [
-            {"id": "APTC21CA54786", "netPremium": 40.69},
-            {"id": "APTC21CA54786", "netPremium": 530.46},
-            {"id": "APTC21CA54786", "netPremium": 40.69},
-            {"id": "APTC21CA54786", "netPremium": 530.46}
+            {"hiosId": "APTC21CA54786", "netPremium": 40.69},
+            {"hiosId": "APTC21CA54786", "netPremium": 530.46},
+            {"hiosId": "APTC21CA54786", "netPremium": 40.69},
+            {"hiosId": "APTC21CA54786", "netPremium": 530.46}
         ],
     },
     "2022": {
         "QHP": [
-            {"id": "QHP228CA54786", "netPremium": 40.69},
-            {"id": "QHP228CA54786", "netPremium": 530.46},
-            {"id": "QHP228CA54786", "netPremium": 40.69},
-            {"id": "QHP228CA54786", "netPremium": 530.46}
+            {"hiosId": "QHP228CA54786", "netPremium": 40.69},
+            {"hiosId": "QHP228CA54786", "netPremium": 530.46},
+            {"hiosId": "QHP228CA54786", "netPremium": 40.69},
+            {"hiosId": "QHP228CA54786", "netPremium": 530.46}
         ],
         "APTC": [
-            {"id": "APTC22CA54786", "netPremium": 40.69},
-            {"id": "APTC22CA54786", "netPremium": 530.46},
-            {"id": "APTC22CA54786", "netPremium": 40.69},
-            {"id": "APTC22CA54786", "netPremium": 530.46}
+            {"hiosId": "APTC22CA54786", "netPremium": 40.69},
+            {"hiosId": "APTC22CA54786", "netPremium": 530.46},
+            {"hiosId": "APTC22CA54786", "netPremium": 40.69},
+            {"hiosId": "APTC22CA54786", "netPremium": 530.46}
         ],
     }
 }
 
+
 # the main function, gets the parameters and spits out a JSON to be used in postman
-def generateSaveReq(year, zip , members, months, usage, type):
+def generate_save_req(year, zip, members, months, usage, type):
     # We create our object with the request fields we need
     request_cfg = {
+        "coverageMonths": months,
         "coverageYear": year,
         "zipCode": zip,
         "noOfMembers": members,
-        "coverageMonths": months,
         "medicalUse": usage[0],
-        "prescriptionsUse": usage[1],
+        "prescriptionUse": usage[1],
         "plans": [
         ]
     }
@@ -76,14 +61,27 @@ def generateSaveReq(year, zip , members, months, usage, type):
         for plan in plans[str(year)][str(type)]:
             request_cfg["plans"].append(plan)
     # we parse the dictionary into a JSON object and print it out, we can direct the same to a file on the disk.
-    req_final = json.dumps(request_cfg, indent= 4, sort_keys= False)
+    req_final = json.dumps(request_cfg, indent=4, sort_keys=False)
     print(req_final)
+    sendRequest(req_final)
+
+
+def sendRequest(save_household_req):
+    ENDPOINT = "XXXX"
+    print(f'[API Request -> POST SavehouseholdId]: {save_household_req}')
+    headers = {
+        "Content-Type": "application/json",
+        "Authority": "XXXX",
+        "Host": "XXXX",
+        "Accept": "/",
+        "Accept-Encoding": "gzip, deflate, br"
+    }
+    req = requests.post(url=ENDPOINT, data=save_household_req, headers=headers)
+    print(f'[API Response -> HHID Generated]: {req.text}')
 
 
 # Examples to generate some saveHousehold request.
-generateSaveReq(2021, 98178, 2, 1.5, ["low", "medium"], "QHP")
-generateSaveReq(2021, 98203, 9, 7.3, ["High", "Low"], "APTC")
-generateSaveReq(2022, 92251, 7, 10.5, ["low", "Very High"], "QHP")
-generateSaveReq(2022, 98001, 5, 6.5, ["Very High", "Low"], "APTC")
-
-
+generate_save_req(2021, 98178, 2, 1.5, ["Low", "Medium"], "QHP")
+# generateSaveReq(2021, 98203, 9, 7.3, ["High", "Low"], "APTC")
+# generateSaveReq(2022, 92251, 7, 10.5, ["low", "Very High"], "QHP")
+# generateSaveReq(2022, 98001, 5, 6.5, ["Very High", "Low"], "APTC")

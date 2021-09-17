@@ -1,4 +1,8 @@
-# requestGen
+# requestGen ._.
+
+> **Current In Progress feature:** Connect to the API endpoint directly generate the HHID based on the request generated
+
+
 
 Data gen utility for da test team. Inspered by Mati's JS script to make the plans for the save req easier to use.
 This is half-baked python approach with some easy to maintain dictionaries for the plan data, the plan data can even be initially generated with Mati's script and update the dictionary with that.
@@ -49,6 +53,6 @@ Will produce the following JSON code ready to be used in postman:
 - Add support for Anonymous or registered user
 - Fully configure commandline arguments support to generate batches of data
 - Export the generated req in JSON
-- Very Nice to Have: Connect to the API endpoint and directly generate the HHID based on the request generated (prob can be done with py requests directly)
+
 
 
