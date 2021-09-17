@@ -8,7 +8,7 @@ The plans for 2021 and 2022 for both APTC and QHP can be stored in the script an
 For example running the function with the following values:
 
 ```python
-generateSaveReq(2021, 2, 1.5, ["low", "medium"], "QHP")
+generateSaveReq(2021, 98178, 2, 1.5, ["low", "medium"], "QHP")
 ```
 
 Will produce the following JSON code ready to be used in postman:
@@ -16,7 +16,8 @@ Will produce the following JSON code ready to be used in postman:
 ```JSON
 {
     "coverageYear": 2021,
-    "numberOfMembers": 2,
+    "zipCode": 98178,
+    "noOfMembers": 2,
     "coverageMonths": 1.5,
     "medicalUse": "low",
     "prescriptionsUse": "medium",

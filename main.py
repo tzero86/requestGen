@@ -56,17 +56,19 @@ plans = {
 }
 
 # the main function, gets the parameters and spits out a JSON to be used in postman
-def generateSaveReq(year, members, months, usage, type):
+def generateSaveReq(year, zip , members, months, usage, type):
     # We create our object with the request fields we need
     request_cfg = {
         "coverageYear": year,
-        "numberOfMembers": members,
+        "zipCode": zip,
+        "noOfMembers": members,
         "coverageMonths": months,
         "medicalUse": usage[0],
         "prescriptionsUse": usage[1],
         "plans": [
         ]
     }
+
     # if program type is QHP or APTC we proceed.
     if type == "QHP" or type == "APTC":
         # for each plan stored for the YEAR and Plan Type, we append that plan to the plans array in request_cfg
@@ -78,9 +80,9 @@ def generateSaveReq(year, members, months, usage, type):
 
 
 # Examples to generate some saveHousehold request.
-generateSaveReq(2021, 2, 1.5, ["low", "medium"], "QHP")
-generateSaveReq(2021, 9, 7.3, ["High", "Low"], "APTC")
-generateSaveReq(2022, 7, 10.5, ["low", "Very High"], "QHP")
-generateSaveReq(2022, 5, 6.5, ["Very High", "Low"], "APTC")
+generateSaveReq(2021, 98178, 2, 1.5, ["low", "medium"], "QHP")
+generateSaveReq(2021, 98203, 9, 7.3, ["High", "Low"], "APTC")
+generateSaveReq(2022, 92251, 7, 10.5, ["low", "Very High"], "QHP")
+generateSaveReq(2022, 98001, 5, 6.5, ["Very High", "Low"], "APTC")
 
 
