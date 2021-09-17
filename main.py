@@ -74,8 +74,6 @@ def generateSaveReq(year, members, months, usage, type):
 
 
 generateSaveReq(2021, 2, 1.5, ["low", "medium"], "QHP")
-generateSaveReq(2021, 9, 7.3, ["High", "Low"], "APTC")
-generateSaveReq(2022, 7, 10.5, ["low", "Very High"], "QHP")
-generateSaveReq(2022, 5, 6.5, ["Very High", "Low"], "APTC")
+
 
 
