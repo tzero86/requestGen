@@ -21,6 +21,8 @@ import argparse
 # args = parser.parse_args()
 
 
+# the main dictionary for the plans, this is the data to be replaced with the actual plans.
+# for both APTC and QHP and for 2021 AND 2022.
 plans = {
 
     "2021": {
@@ -53,10 +55,9 @@ plans = {
     }
 }
 
-
-
-
+# the main function, gets the parameters and spits out a JSON to be used in postman
 def generateSaveReq(year, members, months, usage, type):
+    # We create our object with the request fields we need
     request_cfg = {
         "coverageYear": year,
         "numberOfMembers": members,
@@ -66,14 +67,20 @@ def generateSaveReq(year, members, months, usage, type):
         "plans": [
         ]
     }
+    # if program type is QHP or APTC we proceed.
     if type == "QHP" or type == "APTC":
+        # for each plan stored for the YEAR and Plan Type, we append that plan to the plans array in request_cfg
         for plan in plans[str(year)][str(type)]:
             request_cfg["plans"].append(plan)
+    # we parse the dictionary into a JSON object and print it out, we can direct the same to a file on the disk.
     req_final = json.dumps(request_cfg, indent= 4, sort_keys= False)
     print(req_final)
 
 
+# Examples to generate some saveHousehold request.
 generateSaveReq(2021, 2, 1.5, ["low", "medium"], "QHP")
-
+generateSaveReq(2021, 9, 7.3, ["High", "Low"], "APTC")
+generateSaveReq(2022, 7, 10.5, ["low", "Very High"], "QHP")
+generateSaveReq(2022, 5, 6.5, ["Very High", "Low"], "APTC")
 
 
