@@ -7,6 +7,8 @@ import argparse
 # parser = argparse.ArgumentParser(description='SaveHousehold Request Generator. e.g: python main.py 2021 2 5 "low" "High" "QHP"')
 # parser.add_argument('year', metavar='Y', type=int, nargs='+',
 #                     help='The year you want to create your plan for.')
+# parser.add_argument('zip', metavar='Z', type=int, nargs='+',
+#                     help='The zip code you want to use.')
 # parser.add_argument('members', metavar='N', type=int, nargs='+',
 #                     help='The number of members for the household.')
 # parser.add_argument('months', metavar='M', type=int, nargs='+',
@@ -68,7 +70,6 @@ def generateSaveReq(year, zip , members, months, usage, type):
         "plans": [
         ]
     }
-
     # if program type is QHP or APTC we proceed.
     if type == "QHP" or type == "APTC":
         # for each plan stored for the YEAR and Plan Type, we append that plan to the plans array in request_cfg
