@@ -5,12 +5,14 @@ from functools import partial
 
 # we create the window
 root = Tk()
-root.title('reqGen v0.0.1')
+root.title('reqGen')
 root.call('wm', 'iconphoto', root._w, PhotoImage(file='reqGen_icon.png'))
+
 # Program title and instruction label
 welcome_text = StringVar()
-welcome_text.set("Select the desired options to generate a saveHousehold Request. You can specify in the ENV.json file if you want to automatically send the request to get your household ID back.")
-title = Message(root, textvariable=welcome_text, width=800).pack(side=TOP, padx=5, pady=15)
+welcome_text.set(""
+                 "Select the desired options to generate a saveHousehold Request ready to be copied into Postman. You can also specify in the ENV.json file if you want to automatically send the request to get your household ID back.")
+title = Message(root, textvariable=welcome_text, width=1200).pack(side=TOP, padx=5, pady=15)
 
 # the different frames (like divs)
 frame = Frame(root)
@@ -22,13 +24,18 @@ frame2.pack()
 frame3.pack()
 frame4.pack()
 
+# footer text
+footer_text = StringVar()
+footer_text.set(".:: .._ _.. ::.")
+title = Message(root, textvariable=footer_text, width=1200).pack(side=TOP, padx=5, pady=15)
+
 
 # Year selector
 years = ['2021', '2022']
 def_year = StringVar(frame)
 def_year.set(years[0])
 plan_year = OptionMenu(frame, def_year, *years)
-year_selection_label = Label(frame, text="Year:").pack(side=LEFT, padx=5, pady=15)
+year_selection_label = Label(frame, text="Plan Year:").pack(side=LEFT, padx=5, pady=15)
 plan_year.pack(side=LEFT, padx=5, pady=15)
 
 # Plan Types
@@ -43,13 +50,13 @@ plan_type = OptionMenu(frame, def_plan_type, *plan_types).pack(side=LEFT, padx=5
 indicators = ["Low", "Medium", "High", "Very High"]
 def_usage_med = StringVar(frame)
 def_usage_med.set("Medium")
-usage_med_label = Label(frame, text="Med Usage:").pack(side=LEFT, padx=5, pady=15)
+usage_med_label = Label(frame, text="Medical Usage:").pack(side=LEFT, padx=5, pady=15)
 usage_medical = OptionMenu(frame, def_usage_med, *indicators).pack(side=LEFT, padx=5, pady=15)
 
 # Prescription Usange indicator
 def_presc_usage = StringVar(frame)
 def_presc_usage.set("Medium")
-presc_usage_med_label = Label(frame, text="Presc. Usage:").pack(side=LEFT, padx=5, pady=15)
+presc_usage_med_label = Label(frame, text="Prescription Usage:").pack(side=LEFT, padx=5, pady=15)
 usage_presc = OptionMenu(frame, def_presc_usage, *indicators).pack(side=LEFT, padx=5, pady=15)
 
 # Zip code, num of members, coverage months
@@ -72,13 +79,12 @@ coverage_months_input_area = Entry(frame2, textvariable=def_months, width=10).pa
 
 # generated request text area and label
 req_gen_label = Label(frame3, text="Request Generated:").pack(side=LEFT, padx=15, pady=15)
-req_gen_input_area = Text(frame3, bg='#1B2A41', width=90, height=10)
+req_gen_input_area = Text(frame3, bg='#57CC99', fg='#112031', width=70, height=10, relief=FLAT)
 req_gen_input_area.pack(side=LEFT, padx=15, pady=15)
-#req_gen_input_area.set(1.0, 'Select the options and generate a new request body.')
 
 # generated API response text area and label
 api_resp_label = Label(frame4, text="Response Generated:").pack(side=LEFT, padx=10, pady=15)
-api_resp_input_area = Text(frame4, bg='#324A5F', width=90, height=10)
+api_resp_input_area = Text(frame4, bg='#80ED99', fg='#112031', width=70, height=10, relief=FLAT)
 api_resp_input_area.pack(side=LEFT, padx=15, pady=15)
 
 
@@ -132,10 +138,10 @@ plans = {
 def generate_save_req(year, zip, members, months, usage, type):
     # We create our object with the request fields we need
     request_cfg = {
-        "coverageMonths": months,
-        "coverageYear": year,
-        "zipCode": zip,
-        "noOfMembers": members,
+        "coverageMonths": float(months),
+        "coverageYear": int(year),
+        "zipCode": int(zip),
+        "noOfMembers": int(members),
         "medicalUse": usage[0],
         "prescriptionUse": usage[1],
         "plans": [
@@ -176,7 +182,7 @@ def ui_generate():
 
 
 # Generate request button
-gen_save_request = Button(frame2, text="Generate", command=partial(ui_generate), bg="#59981A").pack(side=LEFT, padx=15, pady=15)
+gen_save_request = Button(frame2, text="Generate", command=partial(ui_generate), bg="#57CC99", fg='#112031', relief=FLAT).pack(side=LEFT, padx=15, pady=15)
 
 root.mainloop()
 

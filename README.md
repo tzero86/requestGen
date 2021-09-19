@@ -1,11 +1,15 @@
 # requestGen ._.
 
-> **Current In Progress feature:** Connect to the API endpoint directly generate the HHID based on the request generated
-
-
+> **Current In Progress feature:** GUI Version
 
 Data gen utility for da test team. Inspired by Mati's JS script to make the plans for the save req easier to use.
 This is half-baked python approach with some easy to maintain dictionaries for the plan data, the plan data can even be initially generated with Mati's script and update the dictionary with that.
+
+## User Interface
+
+A simple UI made with Tkinter, should make the user of this even easier. Still requires setting up the ENV.json file before using.
+
+![](https://imgur.com/Eek8g3R)
 
 The plans for 2021 and 2022 for both APTC and QHP can be stored in the script and consumed on-demand by the parameters passed to the function.
 
