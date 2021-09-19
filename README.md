@@ -9,7 +9,7 @@ This is half-baked python approach with some easy to maintain dictionaries for t
 
 A simple UI made with Tkinter, should make the user of this even easier. Still requires setting up the ENV.json file before using.
 
-![](https://imgur.com/Eek8g3R)
+![](https://i.imgur.com/Eek8g3R.png)
 
 The plans for 2021 and 2022 for both APTC and QHP can be stored in the script and consumed on-demand by the parameters passed to the function.
 
