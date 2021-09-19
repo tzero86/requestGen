@@ -1,9 +1,89 @@
 import json
 import requests
+from tkinter import *
+from functools import partial
+
+# we create the window
+root = Tk()
+root.title('reqGen v0.0.1')
+root.call('wm', 'iconphoto', root._w, PhotoImage(file='reqGen_icon.png'))
+# Program title and instruction label
+welcome_text = StringVar()
+welcome_text.set("Select the desired options to generate a saveHousehold Request. You can specify in the ENV.json file if you want to automatically send the request to get your household ID back.")
+title = Message(root, textvariable=welcome_text, width=800).pack(side=TOP, padx=5, pady=15)
+
+# the different frames (like divs)
+frame = Frame(root)
+frame2 = Frame(root)
+frame3 = Frame(root, width=50, height=5)
+frame4 = Frame(root, width=50, height=5)
+frame.pack()
+frame2.pack()
+frame3.pack()
+frame4.pack()
+
+
+# Year selector
+years = ['2021', '2022']
+def_year = StringVar(frame)
+def_year.set(years[0])
+plan_year = OptionMenu(frame, def_year, *years)
+year_selection_label = Label(frame, text="Year:").pack(side=LEFT, padx=5, pady=15)
+plan_year.pack(side=LEFT, padx=5, pady=15)
+
+# Plan Types
+plan_types = ["APTC", "QHP", "QDP"]
+def_plan_type = StringVar(frame)
+def_plan_type.set("APTC")
+plan_type_selection_label = Label(frame, text="Plan Type:").pack(side=LEFT, padx=5, pady=15)
+plan_type = OptionMenu(frame, def_plan_type, *plan_types).pack(side=LEFT, padx=5, pady=15)
+
+
+# Usange indicator
+indicators = ["Low", "Medium", "High", "Very High"]
+def_usage_med = StringVar(frame)
+def_usage_med.set("Medium")
+usage_med_label = Label(frame, text="Med Usage:").pack(side=LEFT, padx=5, pady=15)
+usage_medical = OptionMenu(frame, def_usage_med, *indicators).pack(side=LEFT, padx=5, pady=15)
+
+# Prescription Usange indicator
+def_presc_usage = StringVar(frame)
+def_presc_usage.set("Medium")
+presc_usage_med_label = Label(frame, text="Presc. Usage:").pack(side=LEFT, padx=5, pady=15)
+usage_presc = OptionMenu(frame, def_presc_usage, *indicators).pack(side=LEFT, padx=5, pady=15)
+
+# Zip code, num of members, coverage months
+def_zip = StringVar()
+def_zip.set("98178")
+zip_code = Label(frame2, text="ZipCode:").pack(side=LEFT, padx=15, pady=15)
+zip_code_input_area = Entry(frame2,textvariable=def_zip, width=10).pack(side=LEFT, padx=15, pady=15)
+
+# members
+def_members = StringVar()
+def_members.set("1")
+num_members = Label(frame2, text="Members:").pack(side=LEFT, padx=15, pady=15)
+num_members_input_area = Entry(frame2, textvariable=def_members, width=10).pack(side=LEFT, padx=15, pady=15)
+
+# coverage months left
+def_months = StringVar()
+def_months.set("6.5")
+coverage_months = Label(frame2, text="Coverage Months:").pack(side=LEFT, padx=15, pady=15)
+coverage_months_input_area = Entry(frame2, textvariable=def_months, width=10).pack(side=LEFT, padx=15, pady=15)
+
+# generated request text area and label
+req_gen_label = Label(frame3, text="Request Generated:").pack(side=LEFT, padx=15, pady=15)
+req_gen_input_area = Text(frame3, bg='#1B2A41', width=90, height=10)
+req_gen_input_area.pack(side=LEFT, padx=15, pady=15)
+#req_gen_input_area.set(1.0, 'Select the options and generate a new request body.')
+
+# generated API response text area and label
+api_resp_label = Label(frame4, text="Response Generated:").pack(side=LEFT, padx=10, pady=15)
+api_resp_input_area = Text(frame4, bg='#324A5F', width=90, height=10)
+api_resp_input_area.pack(side=LEFT, padx=15, pady=15)
+
 
 # Load ENV settings from the file
-
-file = open('ENV.json',)
+file = open('ENV.json', )
 env_cfg = json.load(file)
 
 # the main dictionary for the plans, this is the data to be replaced with the actual plans.
@@ -62,14 +142,17 @@ def generate_save_req(year, zip, members, months, usage, type):
         ]
     }
     # if program type is QHP or APTC we proceed.
-    if type == "QHP" or type == "APTC":
+    if type in ["QHP", "QDP", "APTC"]:
         # for each plan stored for the YEAR and Plan Type, we append that plan to the plans array in request_cfg
         for plan in plans[str(year)][str(type)]:
             request_cfg["plans"].append(plan)
     # we parse the dictionary into a JSON object and print it out, we can direct the same to a file on the disk.
     req_final = json.dumps(request_cfg, indent=4, sort_keys=False)
     print(req_final)
-    send_post_request(req_final)
+    if env_cfg["sendSaveReq"]:
+        send_post_request(req_final)
+    req_gen_input_area.delete(1.0, END)
+    req_gen_input_area.insert(END, req_final)
 
 
 def send_post_request(save_household_req):
@@ -83,12 +166,24 @@ def send_post_request(save_household_req):
     }
     req = requests.post(url=env_cfg['ENDPOINT'], data=save_household_req, headers=headers)
     print(f'[API Response -> HouseholdId Generated]: {req.text}')
+    api_resp_input_area.delete(1.0, END)
+    api_resp_input_area.insert(END, req.text)
 
+
+# function to handle generate button click event
+def ui_generate():
+    generate_save_req(def_year.get(), def_zip.get(), def_members.get(), def_months.get(), [def_usage_med.get(), def_presc_usage.get()], def_plan_type.get())
+
+
+# Generate request button
+gen_save_request = Button(frame2, text="Generate", command=partial(ui_generate), bg="#59981A").pack(side=LEFT, padx=15, pady=15)
+
+root.mainloop()
 
 # Examples to generate some saveHousehold request.
 
 # Parameters: year, zip, members, months, usage, type
-generate_save_req(2021, 98178, 2, 1.5, ["Low", "Medium"], "QHP")
+# generate_save_req(2021, 98178, 2, 1.5, ["Low", "Medium"], "QHP")
 # generateSaveReq(2021, 98203, 9, 7.3, ["High", "Low"], "APTC")
 # generateSaveReq(2022, 92251, 7, 10.5, ["low", "Very High"], "QHP")
 # generateSaveReq(2022, 98001, 5, 6.5, ["Very High", "Low"], "APTC")
