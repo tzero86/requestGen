@@ -6,13 +6,13 @@ from functools import partial
 # we create the window
 root = Tk()
 root.title('reqGen')
-root.call('wm', 'iconphoto', root._w, PhotoImage(file='reqGen_icon.png'))
+# root.call('wm', 'iconphoto', root._w, PhotoImage(file='reqGen_icon.png'))
 
 # Program title and instruction label
 welcome_text = StringVar()
 welcome_text.set(""
                  "Select the desired options to generate a saveHousehold Request ready to be copied into Postman. You can also specify in the ENV.json file if you want to automatically send the request to get your household ID back.")
-title = Message(root, textvariable=welcome_text, width=1200).pack(side=TOP, padx=5, pady=15)
+title = Message(root, textvariable=welcome_text, width=800).pack(side=TOP, padx=5, pady=15)
 
 # the different frames (like divs)
 frame = Frame(root)
@@ -29,7 +29,6 @@ footer_text = StringVar()
 footer_text.set(".:: .._ _.. ::.")
 title = Message(root, textvariable=footer_text, width=1200).pack(side=TOP, padx=5, pady=15)
 
-
 # Year selector
 years = ['2021', '2022']
 def_year = StringVar(frame)
@@ -44,7 +43,6 @@ def_plan_type = StringVar(frame)
 def_plan_type.set("APTC")
 plan_type_selection_label = Label(frame, text="Plan Type:").pack(side=LEFT, padx=5, pady=15)
 plan_type = OptionMenu(frame, def_plan_type, *plan_types).pack(side=LEFT, padx=5, pady=15)
-
 
 # Usange indicator
 indicators = ["Low", "Medium", "High", "Very High"]
@@ -63,7 +61,7 @@ usage_presc = OptionMenu(frame, def_presc_usage, *indicators).pack(side=LEFT, pa
 def_zip = StringVar()
 def_zip.set("98178")
 zip_code = Label(frame2, text="ZipCode:").pack(side=LEFT, padx=15, pady=15)
-zip_code_input_area = Entry(frame2,textvariable=def_zip, width=10).pack(side=LEFT, padx=15, pady=15)
+zip_code_input_area = Entry(frame2, textvariable=def_zip, width=10).pack(side=LEFT, padx=15, pady=15)
 
 # members
 def_members = StringVar()
@@ -86,7 +84,6 @@ req_gen_input_area.pack(side=LEFT, padx=15, pady=15)
 api_resp_label = Label(frame4, text="Response Generated:").pack(side=LEFT, padx=10, pady=15)
 api_resp_input_area = Text(frame4, bg='#80ED99', fg='#112031', width=70, height=10, relief=FLAT)
 api_resp_input_area.pack(side=LEFT, padx=15, pady=15)
-
 
 # Load ENV settings from the file
 file = open('ENV.json', )
@@ -116,6 +113,23 @@ plans = {
             {"hiosId": "APTC21CA54786", "netPremium": 40.69},
             {"hiosId": "APTC21CA54786", "netPremium": 530.46}
         ],
+        "QDP": [
+            {"hiosId": "25210CA0080013", "netPremium": 199.00},
+            {"hiosId": "37216CA0010003", "netPremium": 295.00},
+            {"hiosId": "25210CA0060011", "netPremium": 355.00},
+            {"hiosId": "25210CA0070012", "netPremium": 457.00},
+            {"hiosId": "25210CA0100015", "netPremium": 424.03},
+            {"hiosId": "25210CA0110016", "netPremium": 604.57},
+            {"hiosId": "37216CA0020006", "netPremium": 837.00},
+            {"hiosId": "37216CA0040007", "netPremium": 916.75},
+            {"hiosId": "25210CA0130018", "netPremium": 1201.65},
+            {"hiosId": "37216CA0010001", "netPremium": 91.00},
+            {"hiosId": "47211CA0000001", "netPremium": 91.00},
+            {"hiosId": "37216CA0010002", "netPremium": 193.00},
+            {"hiosId": "25210CA0050010", "netPremium": 253.00},
+            {"hiosId": "25210CA0090014", "netPremium": 301.00},
+            {"hiosId": "37216CA0020004", "netPremium": 397.00},
+            {"hiosId": "37216CA0040009", "netPremium": 703.19}]
     },
     "2022": {
         "QHP": [
@@ -178,11 +192,13 @@ def send_post_request(save_household_req):
 
 # function to handle generate button click event
 def ui_generate():
-    generate_save_req(def_year.get(), def_zip.get(), def_members.get(), def_months.get(), [def_usage_med.get(), def_presc_usage.get()], def_plan_type.get())
+    generate_save_req(def_year.get(), def_zip.get(), def_members.get(), def_months.get(),
+                      [def_usage_med.get(), def_presc_usage.get()], def_plan_type.get())
 
 
 # Generate request button
-gen_save_request = Button(frame2, text="Generate", command=partial(ui_generate), bg="#57CC99", fg='#112031', relief=FLAT).pack(side=LEFT, padx=15, pady=15)
+gen_save_request = Button(frame2, text="Generate", command=partial(ui_generate), bg="#57CC99", fg='#112031',
+                          relief=FLAT).pack(side=LEFT, padx=15, pady=15)
 
 root.mainloop()
 
