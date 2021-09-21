@@ -7,7 +7,7 @@ This is half-baked python approach with some easy to maintain dictionaries for t
 
 ## User Interface
 
-A simple UI made with Tkinter, should make the user of this even easier. Still requires setting up the ENV.json file before using.
+A simple UI made with Tkinter, should make the user of this even easier. Still requires setting up the cfg.json file before using.
 
 ![](https://i.imgur.com/Eek8g3R.png)
 
@@ -16,11 +16,11 @@ The plans for 2021 and 2022 for both APTC and QHP can be stored in the script an
 
 ## Usage
 
-1. Rename the environment config file from `ENV_sample.json` to `ENV.json` and complete the values in that same file.
+1. Rename the environment config file from `cfg_sample.json` to `cfg.json` and complete the values in that same file.
 2. Change the Plans array and populate with the plan values you need for testing, add those into the appropriate type and year.
-3. Change the parameters for the generate_save_req() function to create your custom request, the plans are automatically selected based on the parameters passed to the function.
-4. Call the function with different data as needed.
-5. Run the program, it will generate the request for you to copy and also send it to the API to get an ID back! (Might not always be convenient, will add a switch to turn it off later.)
+3. If you don't want to generate the HHID automatically, just set the `"sendSaveReq": true,`  to `"sendSaveReq": false,`.
+4. Select the parameters to create your custom request.
+5. Click Generate button and it will generate the request for you to copy and also send it to the API to get an ID back! (Might not always be convenient, will add a switch to turn it off later.)
 6. Enjoy!
 
 

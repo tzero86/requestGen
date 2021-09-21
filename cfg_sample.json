@@ -1,0 +1,37 @@
+{
+  "ENDPOINT": "https://pokeapi.co/api/v2/",
+  "Authority": "test.com",
+  "Host": "test.com",
+  "sendSaveReq": true,
+  "plans": {
+    "2021": {
+        "QHP": [
+            {"hiosId": "25210CA010001501", "programType": "qhp", "netPremium": 336.21},
+            {"hiosId": "25210CA012001701", "programType": "qhp", "netPremium": 516.75}
+        ],
+        "APTC": [
+            {"hiosId": "APTC21CA54786", "netPremium": 40.69},
+
+            {"hiosId": "APTC21CA54786", "netPremium": 530.46}
+        ],
+        "QDP": [
+            {"hiosId": "25210CA0080013", "netPremium": 199.00},
+            {"hiosId": "37216CA0040009", "netPremium": 703.19}],
+        "QDPv2": [
+            {"hiosId": "25210CA0080013", "programType": "qdp", "netPremium": 199.00},
+            {"hiosId": "37216CA0040009", "programType": "qdp", "netPremium": 703.19}
+
+        ]
+    },
+    "2022": {
+        "QHP": [
+            {"hiosId": "QHP228CA54786", "programType": "qhp", "netPremium": 40.69},
+            {"hiosId": "QHP228CA54786", "programType": "qhp", "netPremium": 530.46}
+        ],
+        "APTC": [
+            {"hiosId": "APTC22CA54786", "netPremium": 40.69},
+            {"hiosId": "APTC22CA54786", "netPremium": 530.46}
+        ]
+    }
+}
+}

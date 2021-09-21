@@ -23,6 +23,10 @@ from functools import partial
 # Defaults  (TODO: Maybe it is best to move this to the config file.)
 # ---------------------------------------------------------------------------
 
+# Load ENV settings from the file (This feeds several parts of the script)
+file = open('cfg.json', )
+env_cfg = json.load(file)
+
 # Color Theme options
 background_color = '#181b28'
 font_color = '#a8b5c2'
@@ -39,84 +43,7 @@ years = ['2021', '2022']
 # the main dictionary for the plans, this is the data to be replaced with the actual plans.
 # for both APTC and QHP and for 2021 AND 2022 (we'll have to add QDP support).
 # TODO: Need to replace this with useful data...
-plans = {
-
-    "2021": {
-        "QHP": [
-            {"hiosId": "25210CA010001501", "programType": "qhp", "netPremium": 336.21},
-            {"hiosId": "25210CA011001601", "programType": "qhp", "netPremium": 426.48},
-            {"hiosId": "25210CA007001201", "programType": "qhp", "netPremium": 350.00},
-            {"hiosId": "25210CA006001101", "programType": "qhp", "netPremium": 299.00},
-            {"hiosId": "25210CA005001001", "programType": "qhp", "netPremium": 248.00},
-            {"hiosId": "25210CA009001401", "programType": "qhp", "netPremium": 272.00},
-            {"hiosId": "25210CA008001301", "programType": "qhp", "netPremium": 221.00},
-            {"hiosId": "25210CA011001601", "programType": "qhp", "netPremium": 426.48},
-            {"hiosId": "25210CA012001701", "programType": "qhp", "netPremium": 516.75},
-            {"hiosId": "25210CA012001701", "programType": "qhp", "netPremium": 516.75}
-        ],
-        "APTC": [
-            {"hiosId": "APTC21CA54786", "netPremium": 40.69},
-            {"hiosId": "APTC21CA54786", "netPremium": 530.46},
-            {"hiosId": "APTC21CA54786", "netPremium": 40.69},
-            {"hiosId": "APTC21CA54786", "netPremium": 530.46}
-        ],
-        "QDP": [
-            {"hiosId": "25210CA0080013", "netPremium": 199.00},
-            {"hiosId": "37216CA0010003", "netPremium": 295.00},
-            {"hiosId": "25210CA0060011", "netPremium": 355.00},
-            {"hiosId": "25210CA0070012", "netPremium": 457.00},
-            {"hiosId": "25210CA0100015", "netPremium": 424.03},
-            {"hiosId": "25210CA0110016", "netPremium": 604.57},
-            {"hiosId": "37216CA0020006", "netPremium": 837.00},
-            {"hiosId": "37216CA0040007", "netPremium": 916.75},
-            {"hiosId": "25210CA0130018", "netPremium": 1201.65},
-            {"hiosId": "37216CA0010001", "netPremium": 91.00},
-            {"hiosId": "47211CA0000001", "netPremium": 91.00},
-            {"hiosId": "37216CA0010002", "netPremium": 193.00},
-            {"hiosId": "25210CA0050010", "netPremium": 253.00},
-            {"hiosId": "25210CA0090014", "netPremium": 301.00},
-            {"hiosId": "37216CA0020004", "netPremium": 397.00},
-            {"hiosId": "37216CA0040009", "netPremium": 703.19}],
-        "QDPv2": [
-            {"hiosId": "25210CA0080013", "programType": "qdp", "netPremium": 199.00},
-            {"hiosId": "37216CA0010003", "programType": "qdp", "netPremium": 295.00},
-            {"hiosId": "25210CA0060011", "programType": "qdp", "netPremium": 355.00},
-            {"hiosId": "25210CA0070012", "programType": "qdp", "netPremium": 457.00},
-            {"hiosId": "25210CA0100015", "programType": "qdp", "netPremium": 424.03},
-            {"hiosId": "25210CA0110016", "programType": "qdp", "netPremium": 604.57},
-            {"hiosId": "37216CA0020006", "programType": "qdp", "netPremium": 837.00},
-            {"hiosId": "37216CA0040007", "programType": "qdp", "netPremium": 916.75},
-            {"hiosId": "25210CA0130018", "programType": "qdp", "netPremium": 1201.65},
-            {"hiosId": "37216CA0010001", "programType": "qdp", "netPremium": 91.00},
-            {"hiosId": "47211CA0000001", "programType": "qdp", "netPremium": 91.00},
-            {"hiosId": "37216CA0010002", "programType": "qdp", "netPremium": 193.00},
-            {"hiosId": "25210CA0050010", "programType": "qdp", "netPremium": 253.00},
-            {"hiosId": "25210CA0090014", "programType": "qdp", "netPremium": 301.00},
-            {"hiosId": "37216CA0020004", "programType": "qdp", "netPremium": 397.00},
-            {"hiosId": "37216CA0040009", "programType": "qdp", "netPremium": 703.19}
-
-        ]
-    },
-    "2022": {
-        "QHP": [
-            {"hiosId": "QHP228CA54786", "programType": "qhp", "netPremium": 40.69},
-            {"hiosId": "QHP228CA54786", "programType": "qhp", "netPremium": 530.46},
-            {"hiosId": "QHP228CA54786", "programType": "qhp", "netPremium": 40.69},
-            {"hiosId": "QHP228CA54786", "programType": "qhp", "netPremium": 530.46}
-        ],
-        "APTC": [
-            {"hiosId": "APTC22CA54786", "netPremium": 40.69},
-            {"hiosId": "APTC22CA54786", "netPremium": 530.46},
-            {"hiosId": "APTC22CA54786", "netPremium": 40.69},
-            {"hiosId": "APTC22CA54786", "netPremium": 530.46}
-        ],
-    }
-}
-
-
-# Load ENV settings from the file (This feeds several parts of the script)
-file = open('ENV.json', )
-env_cfg = json.load(file)
+plans = env_cfg['plans']
 
 # ---------------------------------------------------------------------------
 # Here starts the UI drama.
@@ -132,7 +59,7 @@ root.configure(bg=background_color)
 # Program title and instruction label
 welcome_text = StringVar()
 welcome_text.set(""
-                 "Select the desired options to generate a saveHousehold Request ready to be copied into Postman. You can also specify in the ENV.json file if you want to automatically send the request to get your household ID back.")
+                 "Select the desired options to generate a saveHousehold Request ready to be copied into Postman. You can also specify in the cfg.json file if you want to automatically send the request to get your household ID back.")
 title = Message(root, textvariable=welcome_text, width=800, fg=font_color, bg=background_color).pack(side=TOP, padx=5, pady=15)
 
 # the different frames (like divs)
