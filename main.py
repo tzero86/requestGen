@@ -3,6 +3,9 @@ import requests
 from tkinter import *
 from functools import partial
 
+# default program types
+program_types = ["QHP", "QDP", "QDPv2", "APTC"]
+
 # we create the window
 root = Tk()
 root.title('reqGen')
@@ -38,7 +41,7 @@ year_selection_label = Label(frame, text="Plan Year:").pack(side=LEFT, padx=5, p
 plan_year.pack(side=LEFT, padx=5, pady=15)
 
 # Plan Types
-plan_types = ["APTC", "QHP", "QDP"]
+plan_types = program_types
 def_plan_type = StringVar(frame)
 def_plan_type.set("APTC")
 plan_type_selection_label = Label(frame, text="Plan Type:").pack(side=LEFT, padx=5, pady=15)
@@ -129,7 +132,26 @@ plans = {
             {"hiosId": "25210CA0050010", "netPremium": 253.00},
             {"hiosId": "25210CA0090014", "netPremium": 301.00},
             {"hiosId": "37216CA0020004", "netPremium": 397.00},
-            {"hiosId": "37216CA0040009", "netPremium": 703.19}]
+            {"hiosId": "37216CA0040009", "netPremium": 703.19}],
+        "QDPv2":
+            [
+                {"hiosId": "25210CA0080013", "programType": "qdp", "netPremium": 199.00},
+                {"hiosId": "37216CA0010003", "programType": "qdp", "netPremium": 295.00},
+                {"hiosId": "25210CA0060011", "programType": "qdp", "netPremium": 355.00},
+                {"hiosId": "25210CA0070012", "programType": "qdp", "netPremium": 457.00},
+                {"hiosId": "25210CA0100015", "programType": "qdp", "netPremium": 424.03},
+                {"hiosId": "25210CA0110016", "programType": "qdp", "netPremium": 604.57},
+                {"hiosId": "37216CA0020006", "programType": "qdp", "netPremium": 837.00},
+                {"hiosId": "37216CA0040007", "programType": "qdp", "netPremium": 916.75},
+                {"hiosId": "25210CA0130018", "programType": "qdp", "netPremium": 1201.65},
+                {"hiosId": "37216CA0010001", "programType": "qdp", "netPremium": 91.00},
+                {"hiosId": "47211CA0000001", "programType": "qdp", "netPremium": 91.00},
+                {"hiosId": "37216CA0010002", "programType": "qdp", "netPremium": 193.00},
+                {"hiosId": "25210CA0050010", "programType": "qdp", "netPremium": 253.00},
+                {"hiosId": "25210CA0090014", "programType": "qdp", "netPremium": 301.00},
+                {"hiosId": "37216CA0020004", "programType": "qdp", "netPremium": 397.00},
+                {"hiosId": "37216CA0040009", "programType": "qdp", "netPremium": 703.19}
+            ]
     },
     "2022": {
         "QHP": [
@@ -162,7 +184,7 @@ def generate_save_req(year, zip, members, months, usage, type):
         ]
     }
     # if program type is QHP or APTC we proceed.
-    if type in ["QHP", "QDP", "APTC"]:
+    if type in program_types:
         # for each plan stored for the YEAR and Plan Type, we append that plan to the plans array in request_cfg
         for plan in plans[str(year)][str(type)]:
             request_cfg["plans"].append(plan)
