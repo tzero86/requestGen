@@ -30,6 +30,9 @@ font_color = '#a8b5c2'
 # default program types
 program_types = ["QHP", "QDP", "QDPv2", "APTC"]
 
+# Default usage indicator values
+indicators = ["Low", "Medium", "High", "Very High"]
+
 # default supported years
 years = ['2021', '2022']
 
@@ -122,14 +125,15 @@ env_cfg = json.load(file)
 # we create the window
 root = Tk()
 root.title('reqGen')
-root.call('wm', 'iconphoto', root._w, PhotoImage(file=os.path.join(os.getcwd(), 'reqGen_icon.png')))
+# FIXME: The icon image fails to load, not worth looking into that now.
+#root.call('wm', 'iconphoto', root._w, PhotoImage(file=os.path.join(os.getcwd(), 'reqGen_icon.png')))
 root.configure(bg=background_color)
 
 # Program title and instruction label
 welcome_text = StringVar()
 welcome_text.set(""
                  "Select the desired options to generate a saveHousehold Request ready to be copied into Postman. You can also specify in the ENV.json file if you want to automatically send the request to get your household ID back.")
-title = Message(root, textvariable=welcome_text, width=800, fg=font_color).pack(side=TOP, padx=5, pady=15)
+title = Message(root, textvariable=welcome_text, width=800, fg=font_color, bg=background_color).pack(side=TOP, padx=5, pady=15)
 
 # the different frames (like divs)
 frame = Frame(root, bg=background_color)
@@ -144,60 +148,72 @@ frame4.pack()
 # footer text
 footer_text = StringVar()
 footer_text.set(".:: .._ _.. ::.")
-footer_msg = Message(root, textvariable=footer_text, width=1200, fg=font_color).pack(side=TOP, padx=5, pady=15)
+footer_msg = Message(root, textvariable=footer_text, width=1200, fg=font_color, bg=background_color).pack(side=TOP, padx=5, pady=15)
 
 # Year selector
 def_year = StringVar(frame)
 def_year.set(years[0])
 plan_year = OptionMenu(frame, def_year, *years)
-year_selection_label = Label(frame, text="Plan Year:", fg=font_color).pack(side=LEFT, padx=5, pady=15)
+plan_year.config(fg=font_color, bg=background_color)
+year_selection_label = Label(frame, text="Plan Year:", fg=font_color, bg=background_color).pack(side=LEFT, padx=5, pady=15)
 plan_year.pack(side=LEFT, padx=5, pady=15)
 
 # Plan Types
 plan_types = program_types
 def_plan_type = StringVar(frame)
 def_plan_type.set("APTC")
-plan_type_selection_label = Label(frame, text="Plan Type:", fg=font_color).pack(side=LEFT, padx=5, pady=15)
-plan_type = OptionMenu(frame, def_plan_type, *plan_types).pack(side=LEFT, padx=5, pady=15)
+plan_type_selection_label = Label(frame, text="Plan Type:", fg=font_color, bg=background_color).pack(side=LEFT, padx=5, pady=15)
+plan_type = OptionMenu(frame, def_plan_type, *plan_types)
+plan_type.config(fg=font_color, bg=background_color)
+plan_type.pack(side=LEFT, padx=5, pady=15)
 
-# Usange indicator
-indicators = ["Low", "Medium", "High", "Very High"]
+# Medical Usage indicator
 def_usage_med = StringVar(frame)
 def_usage_med.set("Medium")
-usage_med_label = Label(frame, text="Medical Usage:", fg=font_color).pack(side=LEFT, padx=5, pady=15)
-usage_medical = OptionMenu(frame, def_usage_med, *indicators).pack(side=LEFT, padx=5, pady=15)
+usage_med_label = Label(frame, text="Medical Usage:", fg=font_color, bg=background_color).pack(side=LEFT, padx=5, pady=15)
+usage_medical = OptionMenu(frame, def_usage_med, *indicators)
+usage_medical.config(fg=font_color, bg=background_color)
+usage_medical.pack(side=LEFT, padx=5, pady=15)
 
-# Prescription Usange indicator
+# Prescription Usage indicator
 def_presc_usage = StringVar(frame)
 def_presc_usage.set("Medium")
-presc_usage_med_label = Label(frame, text="Prescription Usage:", fg=font_color).pack(side=LEFT, padx=5, pady=15)
-usage_presc = OptionMenu(frame, def_presc_usage, *indicators).pack(side=LEFT, padx=5, pady=15)
+presc_usage_med_label = Label(frame, text="Prescription Usage:", fg=font_color, bg=background_color).pack(side=LEFT, padx=5, pady=15)
+usage_presc = OptionMenu(frame, def_presc_usage, *indicators)
+usage_presc.config(fg=font_color, bg=background_color)
+usage_presc.pack(side=LEFT, padx=5, pady=15)
 
 # Zip code, num of members, coverage months
 def_zip = StringVar()
 def_zip.set("98178")
-zip_code = Label(frame2, text="ZipCode:", fg=font_color).pack(side=LEFT, padx=15, pady=15)
-zip_code_input_area = Entry(frame2, textvariable=def_zip, width=10).pack(side=LEFT, padx=15, pady=15)
+zip_code = Label(frame2, text="ZipCode:", fg=font_color, bg=background_color).pack(side=LEFT, padx=15, pady=15)
+zip_code_input_area = Entry(frame2, textvariable=def_zip, width=10)
+zip_code_input_area.config(fg=font_color, bg=background_color)
+zip_code_input_area.pack(side=LEFT, padx=15, pady=15)
 
 # members
 def_members = StringVar()
 def_members.set("1")
-num_members = Label(frame2, text="Members:", fg=font_color).pack(side=LEFT, padx=15, pady=15)
-num_members_input_area = Entry(frame2, textvariable=def_members, width=10).pack(side=LEFT, padx=15, pady=15)
+num_members = Label(frame2, text="Members:", fg=font_color, bg=background_color).pack(side=LEFT, padx=15, pady=15)
+num_members_input_area = Entry(frame2, textvariable=def_members, width=10)
+num_members_input_area.config(fg=font_color, bg=background_color)
+num_members_input_area.pack(side=LEFT, padx=15, pady=15)
 
 # coverage months left
 def_months = StringVar()
 def_months.set("6.5")
-coverage_months = Label(frame2, text="Coverage Months:", fg=font_color).pack(side=LEFT, padx=15, pady=15)
-coverage_months_input_area = Entry(frame2, textvariable=def_months, width=10).pack(side=LEFT, padx=15, pady=15)
+coverage_months = Label(frame2, text="Coverage Months:", fg=font_color, bg=background_color).pack(side=LEFT, padx=15, pady=15)
+coverage_months_input_area = Entry(frame2, textvariable=def_months, width=10)
+coverage_months_input_area.config(fg=font_color, bg=background_color)
+coverage_months_input_area.pack(side=LEFT, padx=15, pady=15)
 
 # generated request text area and label
-req_gen_label = Label(frame3, text="Request Generated:", fg=font_color).pack(side=LEFT, padx=15, pady=15)
+req_gen_label = Label(frame3, text="Request Generated:", fg=font_color, bg=background_color).pack(side=LEFT, padx=15, pady=15)
 req_gen_input_area = Text(frame3, bg='#57CC99', fg='#112031', width=70, height=10, relief=FLAT)
 req_gen_input_area.pack(side=LEFT, padx=15, pady=15)
 
 # generated API response text area and label
-api_resp_label = Label(frame4, text="Response Generated:", fg=font_color).pack(side=LEFT, padx=10, pady=15)
+api_resp_label = Label(frame4, text="Response Generated:", fg=font_color, bg=background_color).pack(side=LEFT, padx=10, pady=15)
 api_resp_input_area = Text(frame4, bg='#80ED99', fg='#112031', width=70, height=10, relief=FLAT)
 api_resp_input_area.pack(side=LEFT, padx=15, pady=15)
 
