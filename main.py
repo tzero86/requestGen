@@ -13,7 +13,6 @@ household IDs for testing purposes"""
 
 import json
 import os
-
 import requests
 from tkinter import *
 from functools import partial
@@ -54,7 +53,7 @@ root = Tk()
 root.title('reqGen')
 # FIXME: The icon image fails to load, not worth looking into that now.
 #root.call('wm', 'iconphoto', root._w, PhotoImage(file=os.path.join(os.getcwd(), 'reqGen_icon.png')))
-root.configure(bg=background_color)
+root.configure(bg=background_color, padx=10, pady=10)
 
 # Program title and instruction label
 welcome_text = StringVar()
@@ -66,7 +65,7 @@ title = Message(root, textvariable=welcome_text, width=800, fg=font_color, bg=ba
 frame = Frame(root, bg=background_color)
 frame2 = Frame(root, bg=background_color)
 frame3 = Frame(root, width=50, height=5, bg=background_color)
-frame4 = Frame(root, width=50, height=5, bg=background_color)
+frame4 = Frame(root, width=50, height=5, bg=background_color, pady=10)
 frame.pack()
 frame2.pack()
 frame3.pack()
@@ -135,14 +134,20 @@ coverage_months_input_area.config(fg=font_color, bg=background_color)
 coverage_months_input_area.pack(side=LEFT, padx=15, pady=15)
 
 # generated request text area and label
+req_scrollbar = Scrollbar(frame3)
+req_scrollbar.pack(side = RIGHT, fill = Y)
 req_gen_label = Label(frame3, text="Request Generated:", fg=font_color, bg=background_color).pack(side=LEFT, padx=15, pady=15)
-req_gen_input_area = Text(frame3, bg='#57CC99', fg='#112031', width=70, height=10, relief=FLAT)
+req_gen_input_area = Text(frame3, bg='#57CC99', fg='#112031', width=70, height=10, relief=FLAT, yscrollcommand = req_scrollbar.set)
 req_gen_input_area.pack(side=LEFT, padx=15, pady=15)
+req_scrollbar.config(command = req_gen_input_area.yview)
 
 # generated API response text area and label
-api_resp_label = Label(frame4, text="Response Generated:", fg=font_color, bg=background_color).pack(side=LEFT, padx=10, pady=15)
+resp_scrollbar = Scrollbar(frame4)
+resp_scrollbar.pack(side = RIGHT, fill = Y)
+api_resp_label = Label(frame4, text="Response Obtained: ", fg=font_color, bg=background_color).pack(side=LEFT, padx=10, pady=15)
 api_resp_input_area = Text(frame4, bg='#80ED99', fg='#112031', width=70, height=10, relief=FLAT)
 api_resp_input_area.pack(side=LEFT, padx=15, pady=15)
+resp_scrollbar.config(command = api_resp_input_area.yview)
 
 # ---------------------------------------------------------------------------
 # Main "Logic" to generate the custom request
