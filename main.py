@@ -31,7 +31,7 @@ background_color = '#181b28'
 font_color = '#a8b5c2'
 
 # default program types
-program_types = ["QHP", "QDP", "QDPv2", "APTC"]
+program_types = ["QHP", "QDP", "APTC"]
 
 # Default usage indicator values
 indicators = ["Low", "Medium", "High", "Very High"]
@@ -144,7 +144,7 @@ req_scrollbar.config(command = req_gen_input_area.yview)
 # generated API response text area and label
 resp_scrollbar = Scrollbar(frame4)
 resp_scrollbar.pack(side = RIGHT, fill = Y)
-api_resp_label = Label(frame4, text="Response Obtained: ", fg=font_color, bg=background_color).pack(side=LEFT, padx=10, pady=15)
+api_resp_label = Label(frame4, text="Response Generated:", fg=font_color, bg=background_color).pack(side=LEFT, padx=10, pady=15)
 api_resp_input_area = Text(frame4, bg='#80ED99', fg='#112031', width=70, height=10, relief=FLAT)
 api_resp_input_area.pack(side=LEFT, padx=15, pady=15)
 resp_scrollbar.config(command = api_resp_input_area.yview)
