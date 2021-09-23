@@ -3,6 +3,7 @@
   "Authority": "test.com",
   "Host": "test.com",
   "sendSaveReq": true,
+  "usageIndicatorValues": ["Low", "Medium", "High", "Very High"],
   "plans": {
     "2021": {
         "QHP": [
@@ -17,7 +18,7 @@
         "QDP": [
             {"hiosId": "25210CA0080013", "netPremium": 199.00},
             {"hiosId": "37216CA0040009", "netPremium": 703.19}],
-        "QDPv2": [
+        "Test": [
             {"hiosId": "25210CA0080013", "programType": "qdp", "netPremium": 199.00},
             {"hiosId": "37216CA0040009", "programType": "qdp", "netPremium": 703.19}
 

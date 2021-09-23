@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Created By  : Elias Medina (@tzero86)
 # Created Date: 09-18-2021
 # version ='0.1'
@@ -16,6 +16,7 @@ import os
 import requests
 from tkinter import *
 from functools import partial
+import sys
 
 
 # ---------------------------------------------------------------------------
@@ -31,13 +32,13 @@ background_color = '#181b28'
 font_color = '#a8b5c2'
 
 # default program types
-program_types = ["QHP", "QDP", "APTC"]
+program_types = list(env_cfg["plans"]["2021"].keys())
 
 # Default usage indicator values
-indicators = ["Low", "Medium", "High", "Very High"]
+indicators = list(env_cfg["usageIndicatorValues"])
 
 # default supported years
-years = ['2021', '2022']
+years = list(env_cfg["plans"].keys())
 
 # the main dictionary for the plans, this is the data to be replaced with the actual plans.
 # for both APTC and QHP and for 2021 AND 2022 (we'll have to add QDP support).
@@ -48,18 +49,31 @@ plans = env_cfg['plans']
 # Here starts the UI drama.
 # ---------------------------------------------------------------------------
 
+
+# OS agnostic dir fix, just a helper function.
+def get_dir(src):
+    dir = sys.argv[0]
+    dir = dir.split('/')
+    dir.pop(-1)
+    dir = '/'.join(dir)
+    dir = dir+'/'+src
+    return dir
+
+
 # we create the window
 root = Tk()
 root.title('reqGen')
-# FIXME: The icon image fails to load, not worth looking into that now.
-#root.call('wm', 'iconphoto', root._w, PhotoImage(file=os.path.join(os.getcwd(), 'reqGen_icon.png')))
+# root.call('wm', 'iconphoto', root._w, PhotoImage(file=get_dir('reqGen_icon.png')))
 root.configure(bg=background_color, padx=10, pady=10)
 
 # Program title and instruction label
 welcome_text = StringVar()
 welcome_text.set(""
-                 "Select the desired options to generate a saveHousehold Request ready to be copied into Postman. You can also specify in the cfg.json file if you want to automatically send the request to get your household ID back.")
-title = Message(root, textvariable=welcome_text, width=800, fg=font_color, bg=background_color).pack(side=TOP, padx=5, pady=15)
+                 "Select the desired options to generate a saveHousehold Request ready to be copied into Postman. You "
+                 "can also specify in the cfg.json file if you want to automatically send the request to get your "
+                 "household ID back.")
+title = Message(root, textvariable=welcome_text, width=800, fg=font_color, bg=background_color).\
+    pack(side=TOP, padx=5, pady=15)
 
 # the different frames (like divs)
 frame = Frame(root, bg=background_color)
@@ -74,21 +88,24 @@ frame4.pack()
 # footer text
 footer_text = StringVar()
 footer_text.set(".:: .._ _.. ::.")
-footer_msg = Message(root, textvariable=footer_text, width=1200, fg=font_color, bg=background_color).pack(side=TOP, padx=5, pady=15)
+footer_msg = Message(root, textvariable=footer_text, width=1200, fg=font_color, bg=background_color).\
+    pack(side=TOP, padx=5, pady=15)
 
 # Year selector
 def_year = StringVar(frame)
 def_year.set(years[0])
 plan_year = OptionMenu(frame, def_year, *years)
 plan_year.config(fg=font_color, bg=background_color)
-year_selection_label = Label(frame, text="Plan Year:", fg=font_color, bg=background_color).pack(side=LEFT, padx=5, pady=15)
+year_selection_label = Label(frame, text="Plan Year:", fg=font_color, bg=background_color).\
+    pack(side=LEFT, padx=5, pady=15)
 plan_year.pack(side=LEFT, padx=5, pady=15)
 
 # Plan Types
 plan_types = program_types
 def_plan_type = StringVar(frame)
 def_plan_type.set("APTC")
-plan_type_selection_label = Label(frame, text="Plan Type:", fg=font_color, bg=background_color).pack(side=LEFT, padx=5, pady=15)
+plan_type_selection_label = Label(frame, text="Plan Type:", fg=font_color, bg=background_color).\
+    pack(side=LEFT, padx=5, pady=15)
 plan_type = OptionMenu(frame, def_plan_type, *plan_types)
 plan_type.config(fg=font_color, bg=background_color)
 plan_type.pack(side=LEFT, padx=5, pady=15)
@@ -96,7 +113,8 @@ plan_type.pack(side=LEFT, padx=5, pady=15)
 # Medical Usage indicator
 def_usage_med = StringVar(frame)
 def_usage_med.set("Medium")
-usage_med_label = Label(frame, text="Medical Usage:", fg=font_color, bg=background_color).pack(side=LEFT, padx=5, pady=15)
+usage_med_label = Label(frame, text="Medical Usage:", fg=font_color, bg=background_color).\
+    pack(side=LEFT, padx=5, pady=15)
 usage_medical = OptionMenu(frame, def_usage_med, *indicators)
 usage_medical.config(fg=font_color, bg=background_color)
 usage_medical.pack(side=LEFT, padx=5, pady=15)
@@ -104,7 +122,8 @@ usage_medical.pack(side=LEFT, padx=5, pady=15)
 # Prescription Usage indicator
 def_presc_usage = StringVar(frame)
 def_presc_usage.set("Medium")
-presc_usage_med_label = Label(frame, text="Prescription Usage:", fg=font_color, bg=background_color).pack(side=LEFT, padx=5, pady=15)
+presc_usage_med_label = Label(frame, text="Prescription Usage:", fg=font_color, bg=background_color).\
+    pack(side=LEFT, padx=5, pady=15)
 usage_presc = OptionMenu(frame, def_presc_usage, *indicators)
 usage_presc.config(fg=font_color, bg=background_color)
 usage_presc.pack(side=LEFT, padx=5, pady=15)
@@ -128,7 +147,8 @@ num_members_input_area.pack(side=LEFT, padx=15, pady=15)
 # coverage months left
 def_months = StringVar()
 def_months.set("6.5")
-coverage_months = Label(frame2, text="Coverage Months:", fg=font_color, bg=background_color).pack(side=LEFT, padx=15, pady=15)
+coverage_months = Label(frame2, text="Coverage Months:", fg=font_color, bg=background_color).\
+    pack(side=LEFT, padx=15, pady=15)
 coverage_months_input_area = Entry(frame2, textvariable=def_months, width=10)
 coverage_months_input_area.config(fg=font_color, bg=background_color)
 coverage_months_input_area.pack(side=LEFT, padx=15, pady=15)
@@ -136,15 +156,18 @@ coverage_months_input_area.pack(side=LEFT, padx=15, pady=15)
 # generated request text area and label
 req_scrollbar = Scrollbar(frame3)
 req_scrollbar.pack(side = RIGHT, fill = Y)
-req_gen_label = Label(frame3, text="Request Generated:", fg=font_color, bg=background_color).pack(side=LEFT, padx=15, pady=15)
-req_gen_input_area = Text(frame3, bg='#57CC99', fg='#112031', width=70, height=10, relief=FLAT, yscrollcommand = req_scrollbar.set)
+req_gen_label = Label(frame3, text="Request Generated:", fg=font_color, bg=background_color).\
+    pack(side=LEFT, padx=15, pady=15)
+req_gen_input_area = Text(frame3, bg='#57CC99', fg='#112031', width=70, height=10, relief=FLAT,
+                          yscrollcommand = req_scrollbar.set)
 req_gen_input_area.pack(side=LEFT, padx=15, pady=15)
 req_scrollbar.config(command = req_gen_input_area.yview)
 
 # generated API response text area and label
 resp_scrollbar = Scrollbar(frame4)
 resp_scrollbar.pack(side = RIGHT, fill = Y)
-api_resp_label = Label(frame4, text="Response Generated:", fg=font_color, bg=background_color).pack(side=LEFT, padx=10, pady=15)
+api_resp_label = Label(frame4, text="Response Generated:", fg=font_color, bg=background_color).\
+    pack(side=LEFT, padx=10, pady=15)
 api_resp_input_area = Text(frame4, bg='#80ED99', fg='#112031', width=70, height=10, relief=FLAT)
 api_resp_input_area.pack(side=LEFT, padx=15, pady=15)
 resp_scrollbar.config(command = api_resp_input_area.yview)
@@ -152,6 +175,7 @@ resp_scrollbar.config(command = api_resp_input_area.yview)
 # ---------------------------------------------------------------------------
 # Main "Logic" to generate the custom request
 # ---------------------------------------------------------------------------
+
 
 # the main function, gets the parameters and spits out a JSON to be used in postman
 def generate_save_req(year, zip, members, months, usage, type):
