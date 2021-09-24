@@ -1,5 +1,5 @@
 {
-  "ENDPOINT": "https://pokeapi.co/api/v2/",
+  "endpoint": "https://pokeapi.co/api/v2/",
   "Authority": "test.com",
   "Host": "test.com",
   "sendSaveReq": true,
