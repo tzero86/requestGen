@@ -4,6 +4,15 @@
   "Host": "test.com",
   "sendSaveReq": true,
   "usageIndicatorValues": ["Low", "Medium", "High", "Very High"],
+  "users": [
+    "Anonymous",
+    "MIT_EU_1",
+    "MIT_EU_2",
+    "MIT_AC_1",
+    "MIT_AC_2",
+    "MIT_BRK_1",
+    "MIT_NAV_2"
+  ],
   "plans": {
     "2021": {
         "QHP": [
