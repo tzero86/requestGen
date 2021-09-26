@@ -177,7 +177,12 @@ coverage_months_input_area = Entry(frame2, textvariable=def_months, width=10)
 coverage_months_input_area.config(fg=font_color, bg=background_color)
 coverage_months_input_area.pack(side=LEFT, padx=15, pady=15)
 
-# generated request text area and label
+# generated request text area and label and copy text button
+def copy_clipboard(control):
+    root.clipboard_clear()
+    root.clipboard_append(control.get("1.0", END))
+
+
 req_scrollbar = Scrollbar(frame3)
 req_scrollbar.pack(side=RIGHT, fill=Y)
 req_gen_label = Label(frame3, text="Request Generated:", fg=font_color, bg=background_color). \
@@ -187,6 +192,9 @@ req_gen_input_area = Text(frame3, bg='#57CC99', fg='#112031', width=70, height=1
 req_gen_input_area.pack(side=LEFT, padx=15, pady=15)
 req_scrollbar.config(command=req_gen_input_area.yview)
 
+copy_req_to_clipboard = Button(frame3, text="Copy", command=partial(copy_clipboard, req_gen_input_area), bg="#57CC99", fg='#112031',
+                          relief=FLAT).pack(side=LEFT, padx=15, pady=15)
+
 # generated API response text area and label
 resp_scrollbar = Scrollbar(frame4)
 resp_scrollbar.pack(side=RIGHT, fill=Y)
@@ -195,6 +203,8 @@ api_resp_label = Label(frame4, text="Response Generated:", fg=font_color, bg=bac
 api_resp_input_area = Text(frame4, bg='#80ED99', fg='#112031', width=70, height=10, relief=FLAT)
 api_resp_input_area.pack(side=LEFT, padx=15, pady=15)
 resp_scrollbar.config(command=api_resp_input_area.yview)
+copy_res_to_clipboard = Button(frame4, text="Copy", command=partial(copy_clipboard, api_resp_input_area), bg='#80ED99', fg='#112031',
+                          relief=FLAT).pack(side=LEFT, padx=15, pady=15)
 
 
 # ---------------------------------------------------------------------------

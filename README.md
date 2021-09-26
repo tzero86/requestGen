@@ -36,7 +36,7 @@ Will produce the following JSON code ready to be used in postman:
 ```JSON
 {
     "coverageYear": 2021,
-    "zipCode": 98178,
+    "zipCode": 98178,cfg_sample.json
     "noOfMembers": 2,
     "coverageMonths": 1.5,
     "medicalUse": "low",
